@@ -12,13 +12,13 @@ namespace CodingTracker
         private DateTime date;
         private DateTime startAt;
         private DateTime endAt;
-        private readonly double duration;
+        private readonly TimeSpan duration;
 
         public int Id { get => id; set => id = value; }
         public DateTime Date { get => date.Date; set => date = value; }
         public DateTime StartAt { get => startAt; set => startAt = value; }
         public DateTime EndAt { get => endAt; set => endAt = value; }
-        public double Duration { get => duration; } // Duration will just readonly it calculated automatically
+        public TimeSpan Duration { get => duration; } // Duration will just readonly it calculated automatically
 
         public CodingSession(int id, DateTime date, DateTime startAt, DateTime endAt)
         {
@@ -29,9 +29,9 @@ namespace CodingTracker
             this.duration = this.calculateDuration();
         }
 
-        private double calculateDuration()
+        private TimeSpan calculateDuration()
         {
-            return this.endAt.Subtract(this.startAt).TotalHours;
+            return this.endAt.Subtract(this.startAt);
         }
 
         public override string ToString()

@@ -82,11 +82,11 @@ namespace ConConfig
             table.AddColumn(new TableColumn("Date").Centered());
             table.AddColumn(new TableColumn("Start At").Centered());
             table.AddColumn(new TableColumn("End At").Centered());
-            table.AddColumn(new TableColumn("Duration").Centered());
+            table.AddColumn(new TableColumn("Duration\n(hh:mm:ss)").Centered());
            
             foreach (var record in records)
             {
-                table.AddRow($"{record.Id}", record.Date.ToString("MM/dd/yyyy"), record.StartAt.ToString("HH:mm"), record.EndAt.ToString("HH:mm"), $"{record.Duration} hr");
+                table.AddRow($"{record.Id}", record.Date.ToString("MM/dd/yyyy"), record.StartAt.ToString("HH:mm"), record.EndAt.ToString("HH:mm"), $"{record.Duration}");
             }
             AnsiConsole.Write(table);
         }
@@ -149,7 +149,29 @@ namespace ConConfig
         }
         private static void OpenStopWatchWindow()
         {
-            Console.WriteLine("stop watch");
+            
+            Stopwatch stopWatch = new Stopwatch();
+            DateTime startAt = DateTime.Now;
+            stopWatch.Start();
+            Console.WriteLine($"starts : {startAt}");
+            Console.WriteLine("counting...");
+            Console.Write("Press any key to stop : ");
+            Console.ReadKey();
+            stopWatch.Stop();
+            DateTime endAt = DateTime.Now;
+
+            var controller = new CodingSessionController();
+            controller.Insert(DateTime.Now.Date.ToString("MM/dd/yyyy") , startAt.ToString("HH:mm"), endAt.ToString("HH:mm"));
+
+            TimeSpan ts = stopWatch.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = System.String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
+            Console.WriteLine("press any key to continue ");
+            Console.ReadKey();
         }
     }
 }
